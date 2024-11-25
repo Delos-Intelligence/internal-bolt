@@ -4,9 +4,13 @@ import { defineConfig, type ViteDevServer } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import vercel from 'vite-plugin-vercel';
 
 export default defineConfig((config) => {
   return {
+    server: {
+      port: process.env.PORT as unknown as number,
+    },
     build: {
       target: 'esnext',
     },
@@ -26,8 +30,9 @@ export default defineConfig((config) => {
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
+      vercel(),
     ],
-    envPrefix:["VITE_","OPENAI_LIKE_API_","OLLAMA_API_BASE_URL","LMSTUDIO_API_BASE_URL"],
+    envPrefix: ['VITE_', 'OPENAI_LIKE_API_', 'OLLAMA_API_BASE_URL', 'LMSTUDIO_API_BASE_URL'],
     css: {
       preprocessorOptions: {
         scss: {
